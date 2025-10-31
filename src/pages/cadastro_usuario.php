@@ -54,55 +54,55 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 include '../includes/header.php';
 ?>
 
-<div class="container">
+<div class="recipiente">
     <h1>Cadastro de Usuário</h1>
     
     <?php if (!empty($message)): ?>
-        <div class="alert alert-<?php echo $messageType === 'success' ? 'success' : 'error'; ?>">
+        <div class="alerta alerta-<?php echo $messageType === 'success' ? 'sucesso' : 'erro'; ?>">
             <?php echo $message; ?>
         </div>
     <?php endif; ?>
     
-    <div class="form-container">
+    <div class="recipiente-formulario">
         <form method="POST" action="">
-            <div class="form-group">
+            <div class="grupo-formulario">
                 <label for="nome">
                     Nome Completo
-                    <span class="required">*</span>
+                    <span class="obrigatorio">*</span>
                 </label>
                 <input 
                     type="text" 
                     id="nome" 
                     name="nome" 
-                    class="form-control" 
+                    class="controle-formulario" 
                     placeholder="Digite o nome completo"
                     value="<?php echo htmlspecialchars($nome ?? ''); ?>"
                     required
                 >
             </div>
             
-            <div class="form-group">
+            <div class="grupo-formulario">
                 <label for="email">
                     E-mail
-                    <span class="required">*</span>
+                    <span class="obrigatorio">*</span>
                 </label>
                 <input 
                     type="email" 
                     id="email" 
                     name="email" 
-                    class="form-control" 
+                    class="controle-formulario" 
                     placeholder="Digite o e-mail (ex: usuario@empresa.com)"
                     value="<?php echo htmlspecialchars($email ?? ''); ?>"
                     required
                 >
-                <small class="form-help">O e-mail deve ser único no sistema.</small>
+                <small class="ajuda-formulario">O e-mail deve ser único no sistema.</small>
             </div>
             
-            <div class="btn-group">
-                <button type="submit" class="btn btn-primary">
+            <div class="grupo-botoes">
+                <button type="submit" class="botao botao-primario">
                     Cadastrar Usuário
                 </button>
-                <a href="gerenciamento.php" class="btn btn-secondary">
+                <a href="gerenciamento.php" class="botao botao-secundario">
                     Voltar
                 </a>
             </div>

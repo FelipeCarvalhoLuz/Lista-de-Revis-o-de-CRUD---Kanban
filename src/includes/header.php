@@ -8,10 +8,10 @@
 </head>
 <body>
     <header>
-        <div class="header-content">
-            <div class="logo">Sistema Kanban</div>
-            <nav class="navbar">
-                <ul class="nav-menu">
+        <div class="conteudo-cabecalho">
+            <div class="logotipo">Sistema Kanban</div>
+            <nav class="barra-navegacao">
+                <ul class="menu-navegacao">
                     <li><a href="../pages/gerenciamento.php" <?php echo (basename($_SERVER['PHP_SELF']) == 'gerenciamento.php') ? 'class="active"' : ''; ?>>Gerenciamento</a></li>
                     <li><a href="../pages/cadastro_usuario.php" <?php echo (basename($_SERVER['PHP_SELF']) == 'cadastro_usuario.php') ? 'class="active"' : ''; ?>>Cadastrar Usuário</a></li>
                     <li><a href="../pages/cadastro_tarefa.php" <?php echo (basename($_SERVER['PHP_SELF']) == 'cadastro_tarefa.php') ? 'class="active"' : ''; ?>>Cadastrar Tarefa</a></li>

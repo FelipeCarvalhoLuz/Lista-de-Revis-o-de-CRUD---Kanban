@@ -108,39 +108,39 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 include '../includes/header.php';
 ?>
 
-<div class="container">
+<div class="recipiente">
     <h1><?php echo $isEdit ? 'Editar Tarefa' : 'Cadastro de Tarefa'; ?></h1>
     
     <?php if (empty($usuarios)): ?>
-        <div class="alert alert-warning">
+        <div class="alerta alerta-aviso">
             Atenção: Não há usuários cadastrados no sistema. 
-            <a href="cadastro_usuario.php" class="alert-link">
+            <a href="cadastro_usuario.php" class="link-alerta">
                 Cadastre um usuário primeiro
             </a>.
         </div>
     <?php endif; ?>
     
     <?php if (!empty($message)): ?>
-        <div class="alert alert-<?php echo $messageType === 'success' ? 'success' : 'error'; ?>">
+        <div class="alerta alerta-<?php echo $messageType === 'success' ? 'sucesso' : 'erro'; ?>">
             <?php echo $message; ?>
         </div>
     <?php endif; ?>
     
-    <div class="form-container">
+    <div class="recipiente-formulario">
         <form method="POST" action="">
             <?php if ($isEdit && $tarefa): ?>
                 <input type="hidden" name="id_tarefa" value="<?php echo $tarefa['id_tarefa']; ?>">
             <?php endif; ?>
             
-            <div class="form-group">
+            <div class="grupo-formulario">
                 <label for="id_usuario">
                     Usuário Responsável
-                    <span class="required">*</span>
+                    <span class="obrigatorio">*</span>
                 </label>
                 <select 
                     id="id_usuario" 
                     name="id_usuario" 
-                    class="form-control" 
+                    class="controle-formulario" 
                     required
                     <?php echo empty($usuarios) ? 'disabled' : ''; ?>
                 >
@@ -163,15 +163,15 @@ include '../includes/header.php';
                 </select>
             </div>
             
-            <div class="form-group">
+            <div class="grupo-formulario">
                 <label for="descricao">
                     Descrição da Tarefa
-                    <span class="required">*</span>
+                    <span class="obrigatorio">*</span>
                 </label>
                 <textarea 
                     id="descricao" 
                     name="descricao" 
-                    class="form-control" 
+                    class="controle-formulario" 
                     placeholder="Descreva a tarefa detalhadamente"
                     rows="4"
                     required
@@ -184,16 +184,16 @@ include '../includes/header.php';
                 ?></textarea>
             </div>
             
-            <div class="form-group">
+            <div class="grupo-formulario">
                 <label for="setor">
                     Setor
-                    <span class="required">*</span>
+                    <span class="obrigatorio">*</span>
                 </label>
                 <input 
                     type="text" 
                     id="setor" 
                     name="setor" 
-                    class="form-control" 
+                    class="controle-formulario" 
                     placeholder="Ex: Produção, Qualidade, Financeiro"
                     value="<?php 
                         if ($isEdit && $tarefa) {
@@ -206,15 +206,15 @@ include '../includes/header.php';
                 >
             </div>
             
-            <div class="form-group">
+            <div class="grupo-formulario">
                 <label for="prioridade">
                     Prioridade
-                    <span class="required">*</span>
+                    <span class="obrigatorio">*</span>
                 </label>
                 <select 
                     id="prioridade" 
                     name="prioridade" 
-                    class="form-control" 
+                    class="controle-formulario" 
                     required
                 >
                     <option value="">Selecione a prioridade</option>
@@ -240,15 +240,15 @@ include '../includes/header.php';
             </div>
             
             <?php if ($isEdit): ?>
-            <div class="form-group">
+            <div class="grupo-formulario">
                 <label for="status">
                     Status
-                    <span class="required">*</span>
+                    <span class="obrigatorio">*</span>
                 </label>
                 <select 
                     id="status" 
                     name="status" 
-                    class="form-control" 
+                    class="controle-formulario" 
                     required
                 >
                     <option value="a_fazer" <?php echo ($tarefa && $tarefa['status'] == 'a_fazer') ? 'selected' : ''; ?>>
@@ -266,15 +266,15 @@ include '../includes/header.php';
                 <input type="hidden" name="status" value="a_fazer">
             <?php endif; ?>
             
-            <div class="btn-group">
+            <div class="grupo-botoes">
                 <button 
                     type="submit" 
-                    class="btn btn-primary"
+                    class="botao botao-primario"
                     <?php echo empty($usuarios) ? 'disabled' : ''; ?>
                 >
                     <?php echo $isEdit ? 'Atualizar Tarefa' : 'Cadastrar Tarefa'; ?>
                 </button>
-                <a href="gerenciamento.php" class="btn btn-secondary">
+                <a href="gerenciamento.php" class="botao botao-secundario">
                     Voltar
                 </a>
             </div>

@@ -55,7 +55,21 @@ $tarefas = [
 
 try {
     $conn = getDBConnection();
-    $stmt = $conn->query("SELECT * FROM vw_tarefas_completas");
+    $stmt = $conn->query("
+        SELECT 
+            t.id_tarefa,
+            t.descricao,
+            t.setor,
+            t.prioridade,
+            t.status,
+            t.data_cadastro,
+            u.id_usuario,
+            u.nome AS usuario_nome,
+            u.email AS usuario_email
+        FROM tarefas t
+        INNER JOIN usuarios u ON t.id_usuario = u.id_usuario
+        ORDER BY t.data_cadastro DESC
+    ");
     $result = $stmt->fetchAll();
     
     foreach ($result as $tarefa) {
@@ -74,100 +88,100 @@ function formatarData($data) {
 include '../includes/header.php';
 ?>
 
-<div class="container-fluid">
-    <div class="header-section">
+<div class="recipiente-fluido">
+    <div class="secao-cabecalho">
         <h1>Gerenciamento de Tarefas</h1>
-        <div class="btn-group">
-            <a href="cadastro_tarefa.php" class="btn btn-primary">
+        <div class="grupo-botoes">
+            <a href="cadastro_tarefa.php" class="botao botao-primario">
                 Nova Tarefa
             </a>
-            <a href="cadastro_usuario.php" class="btn btn-success">
+            <a href="cadastro_usuario.php" class="botao botao-sucesso">
                 Novo Usuário
             </a>
         </div>
     </div>
     
     <?php if (!empty($message)): ?>
-        <div class="alert alert-<?php echo $messageType === 'success' ? 'success' : 'error'; ?>">
+        <div class="alerta alerta-<?php echo $messageType === 'success' ? 'sucesso' : 'erro'; ?>">
             <?php echo $message; ?>
         </div>
     <?php endif; ?>
     
-    <div class="statistics">
-        <div class="stat-card stat-afazer">
-            <div class="stat-number"><?php echo count($tarefas['a_fazer']); ?></div>
-            <div class="stat-label">A Fazer</div>
+    <div class="estatisticas">
+        <div class="cartao-estatistica estatistica-afazer">
+            <div class="numero-estatistica"><?php echo count($tarefas['a_fazer']); ?></div>
+            <div class="rotulo-estatistica">A Fazer</div>
         </div>
-        <div class="stat-card stat-fazendo">
-            <div class="stat-number"><?php echo count($tarefas['fazendo']); ?></div>
-            <div class="stat-label">Fazendo</div>
+        <div class="cartao-estatistica estatistica-fazendo">
+            <div class="numero-estatistica"><?php echo count($tarefas['fazendo']); ?></div>
+            <div class="rotulo-estatistica">Fazendo</div>
         </div>
-        <div class="stat-card stat-pronto">
-            <div class="stat-number"><?php echo count($tarefas['pronto']); ?></div>
-            <div class="stat-label">Pronto</div>
+        <div class="cartao-estatistica estatistica-pronto">
+            <div class="numero-estatistica"><?php echo count($tarefas['pronto']); ?></div>
+            <div class="rotulo-estatistica">Pronto</div>
         </div>
-        <div class="stat-card stat-total">
-            <div class="stat-number"><?php echo count($tarefas['a_fazer']) + count($tarefas['fazendo']) + count($tarefas['pronto']); ?></div>
-            <div class="stat-label">Total</div>
+        <div class="cartao-estatistica estatistica-total">
+            <div class="numero-estatistica"><?php echo count($tarefas['a_fazer']) + count($tarefas['fazendo']) + count($tarefas['pronto']); ?></div>
+            <div class="rotulo-estatistica">Total</div>
         </div>
     </div>
     
-    <div class="kanban-board">
-        <div class="kanban-column afazer">
-            <div class="kanban-column-header">
-                <div class="kanban-column-title">
+    <div class="quadro-kanban">
+        <div class="coluna-kanban afazer">
+            <div class="cabecalho-coluna-kanban">
+                <div class="titulo-coluna-kanban">
                     A Fazer
-                    <span class="kanban-column-count"><?php echo count($tarefas['a_fazer']); ?></span>
+                    <span class="contador-coluna-kanban"><?php echo count($tarefas['a_fazer']); ?></span>
                 </div>
             </div>
             
             <?php if (empty($tarefas['a_fazer'])): ?>
-                <div class="empty-state">
-                    <div class="empty-state-text">Nenhuma tarefa</div>
+                <div class="estado-vazio">
+                    <div class="texto-estado-vazio">Nenhuma tarefa</div>
                 </div>
             <?php else: ?>
                 <?php foreach ($tarefas['a_fazer'] as $tarefa): ?>
-                    <div class="task-card">
-                        <div class="task-header">
-                            <span class="task-priority <?php echo $tarefa['prioridade']; ?>">
+                    <div class="cartao-tarefa">
+                        <div class="cabecalho-tarefa">
+                            <span class="prioridade-tarefa <?php echo $tarefa['prioridade']; ?>">
                                 <?php echo ucfirst($tarefa['prioridade']); ?>
                             </span>
                         </div>
                         
-                        <div class="task-description">
+                        <div class="descricao-tarefa">
                             <?php echo nl2br(htmlspecialchars($tarefa['descricao'])); ?>
                         </div>
                         
-                        <div class="task-meta">
-                            <div class="task-meta-item">
+                        <div class="meta-tarefa">
+                            <div class="item-meta-tarefa">
                                 <strong>Responsável:</strong>
                                 <?php echo htmlspecialchars($tarefa['usuario_nome']); ?>
                             </div>
-                            <div class="task-meta-item">
+                            <div class="item-meta-tarefa">
                                 <strong>Setor:</strong>
                                 <?php echo htmlspecialchars($tarefa['setor']); ?>
                             </div>
-                            <div class="task-meta-item">
+                            <div class="item-meta-tarefa">
                                 <strong>Cadastro:</strong>
                                 <?php echo formatarData($tarefa['data_cadastro']); ?>
                             </div>
                         </div>
                         
-                        <div class="task-actions">
-                            <form method="POST" class="task-form" onsubmit="return atualizarStatus(event, this)">
+                        <div class="acoes-tarefa">
+                            <form method="POST" class="formulario-tarefa" onsubmit="return atualizarStatus(event, this)">
                                 <input type="hidden" name="action" value="update_status">
                                 <input type="hidden" name="id_tarefa" value="<?php echo $tarefa['id_tarefa']; ?>">
-                                <select name="status" class="form-control task-status-select" onchange="this.form.submit()">
+                                <select name="status" class="controle-formulario selecao-status-tarefa" onchange="this.form.submit()">
                                     <option value="a_fazer" selected>A Fazer</option>
                                     <option value="fazendo">Fazendo</option>
                                     <option value="pronto">Pronto</option>
                                 </select>
                             </form>
-                            <a href="cadastro_tarefa.php?id=<?php echo $tarefa['id_tarefa']; ?>" class="btn btn-warning btn-sm">
+                            <a href="cadastro_tarefa.php?id=<?php echo $tarefa['id_tarefa']; ?>" class="botao botao-aviso botao-pequeno">
                                 Editar
                             </a>
                             <a href="?action=delete&id=<?php echo $tarefa['id_tarefa']; ?>" 
-                               class="btn btn-danger btn-sm" 
+                               class="botao botao-perigo botao-pequeno" 
                                onclick="return confirm('Tem certeza que deseja excluir esta tarefa?')">
                                 Excluir
                             </a>
@@ -177,61 +191,61 @@ include '../includes/header.php';
             <?php endif; ?>
         </div>
         
-        <div class="kanban-column fazendo">
-            <div class="kanban-column-header">
-                <div class="kanban-column-title">
+        <div class="coluna-kanban fazendo">
+            <div class="cabecalho-coluna-kanban">
+                <div class="titulo-coluna-kanban">
                     Fazendo
-                    <span class="kanban-column-count"><?php echo count($tarefas['fazendo']); ?></span>
+                    <span class="contador-coluna-kanban"><?php echo count($tarefas['fazendo']); ?></span>
                 </div>
             </div>
             
             <?php if (empty($tarefas['fazendo'])): ?>
-                <div class="empty-state">
-                    <div class="empty-state-text">Nenhuma tarefa</div>
+                <div class="estado-vazio">
+                    <div class="texto-estado-vazio">Nenhuma tarefa</div>
                 </div>
             <?php else: ?>
                 <?php foreach ($tarefas['fazendo'] as $tarefa): ?>
-                    <div class="task-card">
-                        <div class="task-header">
-                            <span class="task-priority <?php echo $tarefa['prioridade']; ?>">
+                    <div class="cartao-tarefa">
+                        <div class="cabecalho-tarefa">
+                            <span class="prioridade-tarefa <?php echo $tarefa['prioridade']; ?>">
                                 <?php echo ucfirst($tarefa['prioridade']); ?>
                             </span>
                         </div>
                         
-                        <div class="task-description">
+                        <div class="descricao-tarefa">
                             <?php echo nl2br(htmlspecialchars($tarefa['descricao'])); ?>
                         </div>
                         
-                        <div class="task-meta">
-                            <div class="task-meta-item">
+                        <div class="meta-tarefa">
+                            <div class="item-meta-tarefa">
                                 <strong>Responsável:</strong>
                                 <?php echo htmlspecialchars($tarefa['usuario_nome']); ?>
                             </div>
-                            <div class="task-meta-item">
+                            <div class="item-meta-tarefa">
                                 <strong>Setor:</strong>
                                 <?php echo htmlspecialchars($tarefa['setor']); ?>
                             </div>
-                            <div class="task-meta-item">
+                            <div class="item-meta-tarefa">
                                 <strong>Cadastro:</strong>
                                 <?php echo formatarData($tarefa['data_cadastro']); ?>
                             </div>
                         </div>
                         
-                        <div class="task-actions">
-                            <form method="POST" class="task-form" onsubmit="return atualizarStatus(event, this)">
+                        <div class="acoes-tarefa">
+                            <form method="POST" class="formulario-tarefa" onsubmit="return atualizarStatus(event, this)">
                                 <input type="hidden" name="action" value="update_status">
                                 <input type="hidden" name="id_tarefa" value="<?php echo $tarefa['id_tarefa']; ?>">
-                                <select name="status" class="form-control task-status-select" onchange="this.form.submit()">
+                                <select name="status" class="controle-formulario selecao-status-tarefa" onchange="this.form.submit()">
                                     <option value="a_fazer">A Fazer</option>
                                     <option value="fazendo" selected>Fazendo</option>
                                     <option value="pronto">Pronto</option>
                                 </select>
                             </form>
-                            <a href="cadastro_tarefa.php?id=<?php echo $tarefa['id_tarefa']; ?>" class="btn btn-warning btn-sm">
+                            <a href="cadastro_tarefa.php?id=<?php echo $tarefa['id_tarefa']; ?>" class="botao botao-aviso botao-pequeno">
                                 Editar
                             </a>
                             <a href="?action=delete&id=<?php echo $tarefa['id_tarefa']; ?>" 
-                               class="btn btn-danger btn-sm" 
+                               class="botao botao-perigo botao-pequeno" 
                                onclick="return confirm('Tem certeza que deseja excluir esta tarefa?')">
                                 Excluir
                             </a>
@@ -241,61 +255,61 @@ include '../includes/header.php';
             <?php endif; ?>
         </div>
         
-        <div class="kanban-column pronto">
-            <div class="kanban-column-header">
-                <div class="kanban-column-title">
+        <div class="coluna-kanban pronto">
+            <div class="cabecalho-coluna-kanban">
+                <div class="titulo-coluna-kanban">
                     Pronto
-                    <span class="kanban-column-count"><?php echo count($tarefas['pronto']); ?></span>
+                    <span class="contador-coluna-kanban"><?php echo count($tarefas['pronto']); ?></span>
                 </div>
             </div>
             
             <?php if (empty($tarefas['pronto'])): ?>
-                <div class="empty-state">
-                    <div class="empty-state-text">Nenhuma tarefa</div>
+                <div class="estado-vazio">
+                    <div class="texto-estado-vazio">Nenhuma tarefa</div>
                 </div>
             <?php else: ?>
                 <?php foreach ($tarefas['pronto'] as $tarefa): ?>
-                    <div class="task-card">
-                        <div class="task-header">
-                            <span class="task-priority <?php echo $tarefa['prioridade']; ?>">
+                    <div class="cartao-tarefa">
+                        <div class="cabecalho-tarefa">
+                            <span class="prioridade-tarefa <?php echo $tarefa['prioridade']; ?>">
                                 <?php echo ucfirst($tarefa['prioridade']); ?>
                             </span>
                         </div>
                         
-                        <div class="task-description">
+                        <div class="descricao-tarefa">
                             <?php echo nl2br(htmlspecialchars($tarefa['descricao'])); ?>
                         </div>
                         
-                        <div class="task-meta">
-                            <div class="task-meta-item">
+                        <div class="meta-tarefa">
+                            <div class="item-meta-tarefa">
                                 <strong>Responsável:</strong>
                                 <?php echo htmlspecialchars($tarefa['usuario_nome']); ?>
                             </div>
-                            <div class="task-meta-item">
+                            <div class="item-meta-tarefa">
                                 <strong>Setor:</strong>
                                 <?php echo htmlspecialchars($tarefa['setor']); ?>
                             </div>
-                            <div class="task-meta-item">
+                            <div class="item-meta-tarefa">
                                 <strong>Cadastro:</strong>
                                 <?php echo formatarData($tarefa['data_cadastro']); ?>
                             </div>
                         </div>
                         
-                        <div class="task-actions">
-                            <form method="POST" class="task-form" onsubmit="return atualizarStatus(event, this)">
+                        <div class="acoes-tarefa">
+                            <form method="POST" class="formulario-tarefa" onsubmit="return atualizarStatus(event, this)">
                                 <input type="hidden" name="action" value="update_status">
                                 <input type="hidden" name="id_tarefa" value="<?php echo $tarefa['id_tarefa']; ?>">
-                                <select name="status" class="form-control task-status-select" onchange="this.form.submit()">
+                                <select name="status" class="controle-formulario selecao-status-tarefa" onchange="this.form.submit()">
                                     <option value="a_fazer">A Fazer</option>
                                     <option value="fazendo">Fazendo</option>
                                     <option value="pronto" selected>Pronto</option>
                                 </select>
                             </form>
-                            <a href="cadastro_tarefa.php?id=<?php echo $tarefa['id_tarefa']; ?>" class="btn btn-warning btn-sm">
+                            <a href="cadastro_tarefa.php?id=<?php echo $tarefa['id_tarefa']; ?>" class="botao botao-aviso botao-pequeno">
                                 Editar
                             </a>
                             <a href="?action=delete&id=<?php echo $tarefa['id_tarefa']; ?>" 
-                               class="btn btn-danger btn-sm" 
+                               class="botao botao-perigo botao-pequeno" 
                                onclick="return confirm('Tem certeza que deseja excluir esta tarefa?')">
                                 Excluir
                             </a>
