@@ -4,18 +4,25 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?php echo isset($pageTitle) ? $pageTitle . ' - ' : ''; ?>Sistema Kanban</title>
-    <link rel="stylesheet" href="../../assets/css/style.css">
+    <link rel="stylesheet" href="/atividades_felipe/LISTA_EXERCICIOS/Lista%20de%20Revis%C3%A3o%20de%20CRUD%20-%20Kanban/assets/css/style.css">
 </head>
 <body>
     <header>
-        <div class="conteudo-cabecalho">
-            <div class="logotipo">Sistema Kanban</div>
-            <nav class="barra-navegacao">
-                <ul class="menu-navegacao">
-                    <li><a href="../pages/gerenciamento.php" <?php echo (basename($_SERVER['PHP_SELF']) == 'gerenciamento.php') ? 'class="active"' : ''; ?>>Gerenciamento</a></li>
-                    <li><a href="../pages/cadastro_usuario.php" <?php echo (basename($_SERVER['PHP_SELF']) == 'cadastro_usuario.php') ? 'class="active"' : ''; ?>>Cadastrar Usuário</a></li>
-                    <li><a href="../pages/cadastro_tarefa.php" <?php echo (basename($_SERVER['PHP_SELF']) == 'cadastro_tarefa.php') ? 'class="active"' : ''; ?>>Cadastrar Tarefa</a></li>
+        <div class="header-content">
+            <div class="logo">Sistema Kanban</div>
+            <nav>
+                <ul class="menu">
+                    <?php if (isset($_SESSION['id_usuario'])): ?>
+                        <li><a href="../pages/gerenciamento.php">Gerenciamento</a></li>
+                        <li><a href="../pages/cadastro_tarefa.php">Nova Tarefa</a></li>
+                        <li><a href="../pages/logout.php">Sair (<?php echo htmlspecialchars($_SESSION['nome_usuario']); ?>)</a></li>
+                    <?php else: ?>
+                        <li><a href="../pages/login.php">Login</a></li>
+                        <li><a href="../pages/cadastro_usuario.php">Cadastrar</a></li>
+                    <?php endif; ?>
                 </ul>
             </nav>
         </div>
     </header>
+    
+    <div class="container">

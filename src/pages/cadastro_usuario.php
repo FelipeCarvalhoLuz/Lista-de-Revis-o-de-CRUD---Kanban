@@ -1,4 +1,6 @@
 <?php
+session_start();
+
 require_once '../config/database.php';
 
 $pageTitle = 'Cadastro de Usuário';
@@ -8,6 +10,8 @@ $messageType = '';
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $nome = trim($_POST['nome'] ?? '');
     $email = trim($_POST['email'] ?? '');
+    $senha = $_POST['senha'] ?? '';
+    $confirmar_senha = $_POST['confirmar_senha'] ?? '';
     
     $errors = [];
     
@@ -21,6 +25,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $errors[] = 'Por favor, insira um e-mail válido.';
     }
     
+    if (empty($senha)) {
+        $errors[] = 'A senha é obrigatória.';
+    } elseif (strlen($senha) < 6) {
+        $errors[] = 'A senha deve ter no mínimo 6 caracteres.';
+    }
+    
+    if ($senha !== $confirmar_senha) {
+        $errors[] = 'As senhas não conferem.';
+    }
+    
     if (empty($errors)) {
         try {
             $conn = getDBConnection();
@@ -30,84 +44,93 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             
             if ($stmt->fetch()) {
                 $message = 'Este e-mail já está cadastrado no sistema.';
-                $messageType = 'error';
+                $messageType = 'erro';
             } else {
-                $stmt = $conn->prepare("INSERT INTO usuarios (nome, email) VALUES (?, ?)");
-                $stmt->execute([$nome, $email]);
+                $senha_hash = password_hash($senha, PASSWORD_DEFAULT);
                 
-                $message = 'Cadastro concluído com sucesso!';
-                $messageType = 'success';
+                $stmt = $conn->prepare("INSERT INTO usuarios (nome, email, senha) VALUES (?, ?, ?)");
+                $stmt->execute([$nome, $email, $senha_hash]);
+                
+                $message = 'Cadastro concluído com sucesso! Faça login para acessar o sistema.';
+                $messageType = 'sucesso';
                 
                 $nome = '';
                 $email = '';
             }
         } catch (PDOException $e) {
             $message = 'Erro ao cadastrar usuário: ' . $e->getMessage();
-            $messageType = 'error';
+            $messageType = 'erro';
         }
     } else {
         $message = implode('<br>', $errors);
-        $messageType = 'error';
+        $messageType = 'erro';
     }
 }
 
 include '../includes/header.php';
 ?>
 
-<div class="recipiente">
-    <h1>Cadastro de Usuário</h1>
-    
-    <?php if (!empty($message)): ?>
-        <div class="alerta alerta-<?php echo $messageType === 'success' ? 'sucesso' : 'erro'; ?>">
-            <?php echo $message; ?>
-        </div>
-    <?php endif; ?>
-    
-    <div class="recipiente-formulario">
-        <form method="POST" action="">
-            <div class="grupo-formulario">
-                <label for="nome">
-                    Nome Completo
-                    <span class="obrigatorio">*</span>
-                </label>
-                <input 
-                    type="text" 
-                    id="nome" 
-                    name="nome" 
-                    class="controle-formulario" 
-                    placeholder="Digite o nome completo"
-                    value="<?php echo htmlspecialchars($nome ?? ''); ?>"
-                    required
-                >
-            </div>
-            
-            <div class="grupo-formulario">
-                <label for="email">
-                    E-mail
-                    <span class="obrigatorio">*</span>
-                </label>
-                <input 
-                    type="email" 
-                    id="email" 
-                    name="email" 
-                    class="controle-formulario" 
-                    placeholder="Digite o e-mail (ex: usuario@empresa.com)"
-                    value="<?php echo htmlspecialchars($email ?? ''); ?>"
-                    required
-                >
-                <small class="ajuda-formulario">O e-mail deve ser único no sistema.</small>
-            </div>
-            
-            <div class="grupo-botoes">
-                <button type="submit" class="botao botao-primario">
-                    Cadastrar Usuário
-                </button>
-                <a href="gerenciamento.php" class="botao botao-secundario">
-                    Voltar
-                </a>
-            </div>
-        </form>
+<h1>Cadastro de Usuário</h1>
+
+<?php if (!empty($message)): ?>
+    <div class="alert <?php echo $messageType === 'sucesso' ? 'success' : ''; ?>">
+        <?php echo $message; ?>
     </div>
+<?php endif; ?>
+
+<div class="form-box">
+    <form method="POST" action="">
+        <div class="form-group">
+            <label for="nome">Nome Completo</label>
+            <input 
+                type="text" 
+                id="nome" 
+                name="nome" 
+                placeholder="Digite o nome completo"
+                value="<?php echo htmlspecialchars($nome ?? ''); ?>"
+                required
+            >
+        </div>
+        
+        <div class="form-group">
+            <label for="email">E-mail</label>
+            <input 
+                type="email" 
+                id="email" 
+                name="email" 
+                placeholder="Digite o e-mail"
+                value="<?php echo htmlspecialchars($email ?? ''); ?>"
+                required
+            >
+        </div>
+        
+        <div class="form-group">
+            <label for="senha">Senha</label>
+            <input 
+                type="password" 
+                id="senha" 
+                name="senha" 
+                placeholder="Mínimo 6 caracteres"
+                required
+            >
+        </div>
+        
+        <div class="form-group">
+            <label for="confirmar_senha">Confirmar Senha</label>
+            <input 
+                type="password" 
+                id="confirmar_senha" 
+                name="confirmar_senha" 
+                placeholder="Digite a senha novamente"
+                required
+            >
+        </div>
+        
+        <div>
+            <button type="submit" class="button">Cadastrar</button>
+            <a href="login.php" class="button">Voltar</a>
+        </div>
+    </form>
 </div>
 
 <?php

@@ -6,25 +6,27 @@
 
 body {
     font-family: Arial, sans-serif;
-    color: #333;
-    background: #f5f5f5;
-    padding: 20px;
+    background-color: #e0e0e0;
+    margin: 0;
+    padding: 0;
 }
 
-.recipiente, .recipiente-fluido {
+.container {
     max-width: 1200px;
     margin: 0 auto;
+    background-color: white;
     padding: 20px;
+    min-height: calc(100vh - 80px);
 }
 
 header {
-    background: #fff;
+    background-color: #2c3e50;
+    color: white;
     padding: 20px;
-    margin-bottom: 20px;
-    border: 1px solid #ddd;
+    margin: 0;
 }
 
-.conteudo-cabecalho {
+.header-content {
     max-width: 1200px;
     margin: 0 auto;
     display: flex;
@@ -32,244 +34,258 @@ header {
     align-items: center;
 }
 
-.logotipo {
+.logo {
     font-size: 24px;
     font-weight: bold;
-    color: #333;
+    text-transform: uppercase;
 }
 
-.menu-navegacao {
+.menu {
     list-style: none;
     display: flex;
-    gap: 10px;
-    flex-wrap: wrap;
-}
-
-.menu-navegacao a {
-    padding: 10px 20px;
-    background: #333;
-    color: #fff;
-    text-decoration: none;
-}
-
-.menu-navegacao a:hover {
-    background: #555;
-}
-
-h1 { 
-    font-size: 28px; 
-    margin-bottom: 20px;
-}
-
-h2 { 
-    font-size: 24px; 
-    margin-bottom: 15px;
-}
-
-h3 { 
-    font-size: 20px; 
-    margin-bottom: 15px;
-}
-
-.secao-cabecalho {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 30px;
-    flex-wrap: wrap;
     gap: 15px;
+    margin: 0;
+    padding: 0;
 }
 
-.recipiente-formulario {
-    background: #fff;
+.menu li {
+    list-style: none;
+}
+
+.menu a {
+    color: white;
+    text-decoration: none;
+    padding: 10px 15px;
+    display: block;
+    border-radius: 0;
+    transition: background-color 0.3s;
+    text-transform: uppercase;
+}
+
+.menu a:hover {
+    background-color: #34495e;
+}
+
+h1 {
+    color: #2c3e50;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: none;
+    text-transform: uppercase;
+}
+
+h2 {
+    color: #2c3e50;
+    font-size: 18px;
+    margin: 0;
+    text-transform: uppercase;
+}
+
+.form-box {
+    background-color: #f8f9fa;
     padding: 30px;
     border: 1px solid #ddd;
+    border-radius: 0;
     max-width: 600px;
-    margin: 0 auto;
+    margin: 20px auto;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
-.grupo-formulario {
-    margin-bottom: 20px;
+.form-group {
+    margin-bottom: 15px;
 }
 
-.grupo-formulario label {
+label {
     display: block;
     margin-bottom: 5px;
     font-weight: bold;
+    text-transform: uppercase;
 }
 
-.controle-formulario {
+input, textarea, select {
     width: 100%;
     padding: 10px;
     border: 1px solid #ddd;
+    border-radius: 0;
+    font-size: 14px;
     font-family: Arial, sans-serif;
 }
 
-.controle-formulario:focus {
+input:focus, textarea:focus, select:focus {
     outline: none;
-    border-color: #333;
+    border-color: #3498db;
 }
 
-textarea.controle-formulario {
-    min-height: 100px;
+textarea {
+    height: 100px;
 }
 
-.botao {
+.button {
+    background-color: #3498db;
+    color: white;
     padding: 10px 20px;
-    background: #333;
-    color: #fff;
     border: none;
+    border-radius: 0;
     cursor: pointer;
     text-decoration: none;
     display: inline-block;
-    font-family: Arial, sans-serif;
-}
-
-.botao:hover {
-    background: #555;
-}
-
-.botao-pequeno {
-    padding: 8px 15px;
+    margin-right: 10px;
     font-size: 14px;
+    transition: background-color 0.3s;
+    text-transform: uppercase;
 }
 
-.grupo-botoes {
-    display: flex;
-    gap: 10px;
-    flex-wrap: wrap;
+.button:hover {
+    background-color: #2980b9;
 }
 
-.alerta {
+.alert {
     padding: 15px;
     margin-bottom: 20px;
-    border: 1px solid #ddd;
-    background: #fff;
+    border: 1px solid black;
+    background-color: red;
+    color: black;
+    border-radius: 0;
 }
 
-.estatisticas {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
+.alert.success {
+    background-color: green;
+    color: black;
+}
+
+.kanban {
+    display: flex;
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.column {
+    flex: 1;
+    background-color: transparent;
+    border: none;
+    border-radius: 0;
+    padding: 15px;
+    min-height: 400px;
+}
+
+.column h2 {
+    border-bottom: none;
+    padding-bottom: 10px;
+    margin-bottom: 15px;
+}
+
+.task-card {
+    background-color: white;
+    border: 1px solid #dee2e6;
+    border-radius: 0;
+    padding: 15px;
+    margin-bottom: 15px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    transition: box-shadow 0.3s;
+}
+
+.task-card:hover {
+    box-shadow: 0 3px 8px rgba(0,0,0,0.15);
+}
+
+.task-description {
+    margin: 10px 0;
+}
+
+.task-info {
+    margin: 10px 0;
+    font-size: 14px;
+    color: gray;
+}
+
+.task-info div {
+    margin: 5px 0;
+}
+
+.task-info strong {
+    text-transform: uppercase;
+}
+
+.priority {
+    color: white;
+    padding: 5px 10px;
+    display: inline-block;
+    margin-bottom: 10px;
+    border-radius: 0;
+    font-size: 12px;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.priority.baixa {
+    background-color: #27ae60;
+}
+
+.priority.media {
+    background-color: #f39c12;
+}
+
+.priority.alta {
+    background-color: #e74c3c;
+}
+
+.task-buttons {
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid #dee2e6;
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.task-buttons select {
+    padding: 6px 10px;
+    font-size: 13px;
+    border-radius: 0;
+    border: 1px solid #ddd;
+    background-color: white;
+    cursor: pointer;
+}
+
+.task-buttons .button {
+    padding: 6px 12px;
+    font-size: 13px;
+    margin: 0;
+}
+
+.empty {
+    display: none;
+}
+
+.stats {
+    display: flex;
     gap: 15px;
     margin-bottom: 30px;
 }
 
-.cartao-estatistica {
-    background: #333;
-    color: #fff;
-    padding: 20px;
-    text-align: center;
-}
-
-.numero-estatistica {
-    font-size: 32px;
-    font-weight: bold;
-    margin-bottom: 5px;
-}
-
-.rotulo-estatistica {
-    font-size: 14px;
-}
-
-.quadro-kanban {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 20px;
-}
-
-.coluna-kanban {
-    background: #fff;
-    border: 1px solid #ddd;
-    padding: 20px;
-    min-height: 400px;
-}
-
-.cabecalho-coluna-kanban {
-    margin-bottom: 20px;
-    padding-bottom: 10px;
-    border-bottom: 2px solid #333;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.titulo-coluna-kanban {
-    font-size: 20px;
-    font-weight: bold;
-}
-
-.contador-coluna-kanban {
-    background: #333;
-    color: #fff;
-    padding: 5px 15px;
-    font-size: 14px;
-}
-
-.cartao-tarefa {
-    background: #fff;
-    padding: 15px;
-    margin-bottom: 15px;
-    border: 1px solid #ddd;
-}
-
-.cabecalho-tarefa {
-    margin-bottom: 10px;
-}
-
-.prioridade-tarefa {
-    padding: 5px 10px;
-    background: #333;
-    color: #fff;
-    font-size: 12px;
-    display: inline-block;
-}
-
-.descricao-tarefa {
-    margin-bottom: 15px;
-}
-
-.meta-tarefa {
-    margin-bottom: 15px;
-    font-size: 14px;
-}
-
-.item-meta-tarefa {
-    margin-bottom: 5px;
-}
-
-.acoes-tarefa {
-    display: flex;
-    gap: 10px;
-    padding-top: 15px;
-    border-top: 1px solid #ddd;
-    flex-wrap: wrap;
-}
-
-.formulario-tarefa {
+.stat-box {
     flex: 1;
-}
-
-.selecao-status-tarefa {
-    width: 100%;
-}
-
-.estado-vazio {
+    background-color: #3498db;
+    color: white;
+    padding: 20px;
     text-align: center;
-    padding: 50px 20px;
-    color: #999;
+    border-radius: 0;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    text-transform: uppercase;
 }
 
-@media (max-width: 768px) {
-    .estatisticas {
-        grid-template-columns: repeat(2, 1fr);
-    }
-    
-    .quadro-kanban {
-        grid-template-columns: 1fr;
-    }
-    
-    .secao-cabecalho {
-        flex-direction: column;
-        align-items: flex-start;
-    }
+.stat-number {
+    font-size: 36px;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+footer {
+    background-color: #2c3e50;
+    color: white;
+    text-align: center;
+    padding: 15px;
+    margin-top: 30px;
+    text-transform: uppercase;
 }
